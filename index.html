@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<title>Petty</title>
+
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#101418">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Petty">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icons/icon-192.png">
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ===== Calendar Tab ===== -->
+  <section id="view-calendar" class="view active">
+    <header class="topbar">
+      <button id="prevMonth" class="icon-btn" aria-label="Previous month">‹</button>
+      <h1 id="monthLabel">Month</h1>
+      <button id="nextMonth" class="icon-btn" aria-label="Next month">›</button>
+    </header>
+    <div class="weekday-row">
+      <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+    </div>
+    <div id="calendarGrid" class="calendar-grid"></div>
+    <div class="legend">
+      <span class="legend-item"><i class="dot jordan"></i> Jordan</span>
+      <span class="legend-item"><i class="dot bethany"></i> Bethany</span>
+    </div>
+  </section>
+
+  <!-- ===== Day Detail (full screen overlay) ===== -->
+  <section id="view-day" class="view">
+    <header class="topbar">
+      <button id="dayBack" class="icon-btn" aria-label="Back">‹</button>
+      <h1 id="dayLabel">Day</h1>
+      <span class="icon-btn spacer"></span>
+    </header>
+
+    <div class="day-content">
+
+      <div class="card">
+        <h2>Who cleaned the kitchen?</h2>
+        <div class="who-row">
+          <button class="who-btn" id="whoJordan" data-who="Jordan">Jordan</button>
+          <button class="who-btn" id="whoBethany" data-who="Bethany">Bethany</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Stopwatch</h2>
+        <div class="stopwatch">
+          <div id="timerDisplay" class="timer-display">00:00:00</div>
+          <button id="timerToggle" class="timer-btn">Start</button>
+        </div>
+
+        <button id="manualToggle" class="manual-toggle-btn">+ Log time manually</button>
+        <div id="manualForm" class="manual-form hidden">
+          <p class="manual-hint">Fill in whatever you know — nothing here is required.</p>
+          <div class="manual-row">
+            <label>Start time
+              <input type="time" id="manualStart">
+            </label>
+            <label>End time
+              <input type="time" id="manualEnd">
+            </label>
+          </div>
+          <div class="manual-row">
+            <label>Duration (minutes)
+              <input type="number" min="0" step="1" id="manualDuration" placeholder="e.g. 25">
+            </label>
+          </div>
+          <div class="manual-actions">
+            <button id="manualCancel" class="manual-cancel-btn">Cancel</button>
+            <button id="manualSave" class="manual-save-btn">Save</button>
+          </div>
+        </div>
+
+        <div id="sessionList" class="session-list"></div>
+      </div>
+
+      <div class="card">
+        <h2>Notes</h2>
+        <div id="noteView" class="note-view hidden">
+          <p id="noteText" class="note-text"></p>
+          <button id="noteEditBtn" class="note-icon-btn" aria-label="Edit note">✏️</button>
+        </div>
+        <div id="noteEdit" class="note-edit">
+          <textarea id="dayNote" class="notes-input" placeholder="Anything worth remembering about today..." rows="4"></textarea>
+          <button id="noteDoneBtn" class="note-icon-btn note-check-btn" aria-label="Done editing note">✓</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Before photos</h2>
+        <div id="beforeGrid" class="photo-grid"></div>
+        <label class="add-photo-btn">
+          + Add photo
+          <input type="file" accept="image/*" multiple id="beforeInput" hidden>
+        </label>
+      </div>
+
+      <div class="card">
+        <h2>After photos</h2>
+        <div id="afterGrid" class="photo-grid"></div>
+        <label class="add-photo-btn">
+          + Add photo
+          <input type="file" accept="image/*" multiple id="afterInput" hidden>
+        </label>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== Metrics Tab ===== -->
+  <section id="view-metrics" class="view">
+    <header class="topbar">
+      <h1>Metrics</h1>
+    </header>
+    <div class="day-content">
+      <div class="card person-card jordan-card">
+        <h2>Jordan</h2>
+        <div class="metric-grid" id="metricsJordan"></div>
+      </div>
+      <div class="card person-card bethany-card">
+        <h2>Bethany</h2>
+        <div class="metric-grid" id="metricsBethany"></div>
+      </div>
+
+      <div class="card">
+        <h2>Data</h2>
+        <p class="manual-hint">Move everything (who cleaned, times, notes, photos) to or from another install of this app.</p>
+        <div class="data-actions">
+          <button id="exportDataBtn" class="data-btn">Export data</button>
+          <label class="data-btn data-import-btn">
+            Import data
+            <input type="file" accept="application/json" id="importDataInput" hidden>
+          </label>
+        </div>
+        <p id="dataStatus" class="data-status"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Photo Lightbox ===== -->
+  <div id="lightbox" class="lightbox hidden">
+    <button id="lightboxClose" class="icon-btn lightbox-close" aria-label="Close">✕</button>
+    <button id="lightboxDelete" class="lightbox-delete">Delete photo</button>
+    <button id="lightboxPrev" class="lightbox-nav lightbox-prev" aria-label="Previous photo">‹</button>
+    <button id="lightboxNext" class="lightbox-nav lightbox-next" aria-label="Next photo">›</button>
+    <img id="lightboxImg" src="" alt="">
+  </div>
+
+  <!-- ===== Bottom Tab Bar ===== -->
+  <nav class="tabbar">
+    <button class="tab-btn active" data-tab="calendar">
+      <span class="tab-icon">📅</span><span>Calendar</span>
+    </button>
+    <button class="tab-btn" data-tab="metrics">
+      <span class="tab-icon">📊</span><span>Metrics</span>
+    </button>
+  </nav>
+
+</div>
+
+<script src="db.js"></script>
+<script src="app.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
+</script>
+</body>
+</html>
