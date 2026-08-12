@@ -59,6 +59,7 @@ let timerStart = null;
 let timerInterval = null;
 let lightboxPhoto = null;
 let noteSaveTimeout = null;
+let calendarField = 'cleanedBy';
 
 // Registers a listener only if the element exists. A stale cached HTML
 // paired with newer JS (mid service-worker update) shouldn't be able to
@@ -122,6 +123,14 @@ on('nextMonth', 'click', () => {
   renderCalendar();
 });
 
+document.querySelectorAll('#calendarFilter .filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    calendarField = btn.dataset.field;
+    document.querySelectorAll('#calendarFilter .filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+    renderCalendar();
+  });
+});
+
 async function renderCalendar() {
   document.getElementById('monthLabel').textContent =
     currentMonth.toLocaleString('default', { month: 'long', year: 'numeric' });
@@ -154,8 +163,8 @@ async function renderCalendar() {
     cell.appendChild(num);
 
     const rec = dayMap[key];
-    if (rec && rec.cleanedBy === 'Jordan') cell.classList.add('cleaned-jordan');
-    if (rec && rec.cleanedBy === 'Bethany') cell.classList.add('cleaned-bethany');
+    if (rec && rec[calendarField] === 'Jordan') cell.classList.add('person-jordan');
+    if (rec && rec[calendarField] === 'Bethany') cell.classList.add('person-bethany');
 
     if (rec && rec.photoCount) {
       const p = document.createElement('span');
@@ -179,25 +188,37 @@ async function openDay(key) {
   document.getElementById('dayLabel').textContent =
     parseKey(key).toLocaleDateString('default', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
 
-  renderWho();
+  renderAllPersonFields();
   renderSessions();
   renderNote();
   await renderPhotos();
   showView('day');
 }
 
-on('whoJordan', 'click', () => setWho('Jordan'));
-on('whoBethany', 'click', () => setWho('Bethany'));
+const PERSON_FIELDS = [
+  { field: 'cleanedBy', prefix: 'who' },
+  { field: 'emptiedBy', prefix: 'empty' },
+  { field: 'filledBy', prefix: 'fill' },
+];
 
-async function setWho(who) {
-  currentDay.cleanedBy = currentDay.cleanedBy === who ? null : who;
+PERSON_FIELDS.forEach(({ field, prefix }) => {
+  on(prefix + 'Jordan', 'click', () => setPersonField(field, prefix, 'Jordan'));
+  on(prefix + 'Bethany', 'click', () => setPersonField(field, prefix, 'Bethany'));
+});
+
+async function setPersonField(field, prefix, who) {
+  currentDay[field] = currentDay[field] === who ? null : who;
   await DB.putDay(currentDay);
-  renderWho();
+  renderPersonField(field, prefix);
 }
 
-function renderWho() {
-  document.getElementById('whoJordan').classList.toggle('selected', currentDay.cleanedBy === 'Jordan');
-  document.getElementById('whoBethany').classList.toggle('selected', currentDay.cleanedBy === 'Bethany');
+function renderPersonField(field, prefix) {
+  withEl(prefix + 'Jordan', el => el.classList.toggle('selected', currentDay[field] === 'Jordan'));
+  withEl(prefix + 'Bethany', el => el.classList.toggle('selected', currentDay[field] === 'Bethany'));
+}
+
+function renderAllPersonFields() {
+  PERSON_FIELDS.forEach(({ field, prefix }) => renderPersonField(field, prefix));
 }
 
 // ===== Notes =====

@@ -26,6 +26,11 @@
       <h1 id="monthLabel">Month</h1>
       <button id="nextMonth" class="icon-btn" aria-label="Next month">›</button>
     </header>
+    <div class="filter-row" id="calendarFilter">
+      <button class="filter-btn active" data-field="cleanedBy">Cleaned</button>
+      <button class="filter-btn" data-field="emptiedBy">Emptied</button>
+      <button class="filter-btn" data-field="filledBy">Filled</button>
+    </div>
     <div class="weekday-row">
       <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
     </div>
@@ -51,6 +56,20 @@
         <div class="who-row">
           <button class="who-btn" id="whoJordan" data-who="Jordan">Jordan</button>
           <button class="who-btn" id="whoBethany" data-who="Bethany">Bethany</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Dishwasher</h2>
+        <div class="sub-label">Emptied by</div>
+        <div class="who-row">
+          <button class="who-btn" id="emptyJordan" data-who="Jordan">Jordan</button>
+          <button class="who-btn" id="emptyBethany" data-who="Bethany">Bethany</button>
+        </div>
+        <div class="sub-label">Filled by</div>
+        <div class="who-row">
+          <button class="who-btn" id="fillJordan" data-who="Jordan">Jordan</button>
+          <button class="who-btn" id="fillBethany" data-who="Bethany">Bethany</button>
         </div>
       </div>
 

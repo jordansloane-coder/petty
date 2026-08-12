@@ -34,7 +34,7 @@ const DB = {
     const store = await tx('days', 'readonly');
     return new Promise((resolve, reject) => {
       const req = store.get(date);
-      req.onsuccess = () => resolve(req.result || { date, cleanedBy: null, sessions: [] });
+      req.onsuccess = () => resolve(req.result || { date, cleanedBy: null, emptiedBy: null, filledBy: null, sessions: [] });
       req.onerror = () => reject(req.error);
     });
   },

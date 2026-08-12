@@ -1,4 +1,4 @@
-const CACHE_NAME = 'petty-v8';
+const CACHE_NAME = 'petty-v9';
 const ASSETS = [
   './',
   './index.html',
