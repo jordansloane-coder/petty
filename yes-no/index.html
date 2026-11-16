@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Yes/No</title>
+<meta name="theme-color" content="#6fb4ee">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Yes/No">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap">
+<style>
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+  html,body{margin:0;height:100%;overflow:hidden;overscroll-behavior:none;
+    background:linear-gradient(#6fb4ee,#8cc8f6 60%,#b9defa)}
+  body{display:flex;align-items:center;justify-content:center;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+  svg{width:100%;height:100%;display:block;overflow:visible}
+  text{font-family:"Fredoka","Baloo 2","Nunito","Arial Rounded MT Bold",ui-rounded,system-ui,sans-serif;font-weight:700}
+  .key{cursor:pointer;outline:none}
+  .cap{transition:transform .07s}
+  .key.down .cap{transform:translateY(14px)}
+  .key.down .side{opacity:0}
+  .key.pop .cap{animation:pop .28s}
+  @keyframes pop{50%{transform:translateY(14px) scale(1.03)}}
+  .rays{animation:tw 1.8s ease-in-out infinite}
+  @keyframes tw{50%{opacity:.45}}
+</style>
+</head>
+<body>
+<svg viewBox="0 0 1024 1536" preserveAspectRatio="xMidYMid meet" role="group" aria-label="Yes or No button">
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6fb4ee"/><stop offset=".6" stop-color="#8cc8f6"/><stop offset="1" stop-color="#b9defa"/></linearGradient>
+  <filter id="grain" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" seed="5" result="n"/>
+    <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 .5  0 0 0 .5 -.15"/>
+    <feComposite in2="SourceGraphic" operator="in"/>
+  </filter>
+  <filter id="blur"><feGaussianBlur stdDeviation="22"/></filter>
+  <linearGradient id="yel" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe94a"/><stop offset=".55" stop-color="#fcdc1f"/><stop offset="1" stop-color="#f5c90f"/></linearGradient>
+  <radialGradient id="grn" cx=".4" cy=".28" r=".85"><stop offset="0" stop-color="#58c25e"/><stop offset=".7" stop-color="#3fae49"/><stop offset="1" stop-color="#349d3f"/></radialGradient>
+  <radialGradient id="red" cx=".4" cy=".28" r=".85"><stop offset="0" stop-color="#f0453a"/><stop offset=".7" stop-color="#e02b25"/><stop offset="1" stop-color="#c82019"/></radialGradient>
+    <g id="Y"><path d="M-50,-44 L0,8 L50,-44 M0,8 L0,66" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="46"/></g>
+  <g id="N"><path d="M-42,42 L-42,-42 L42,42 L42,-42" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="40"/></g>
+</defs>
+
+<!-- hills & clouds -->
+<g fill="#fff" opacity=".32">
+  <path d="M0,420 L0,300 C0,270 40,250 75,285 C95,270 150,300 160,345 C170,395 150,418 120,418 Z"/>
+  <path d="M1024,500 L1024,400 C990,360 940,375 925,420 C885,415 855,440 855,470 C855,490 870,498 890,498 Z"/>
+</g>
+<path d="M0,1230 C60,1130 130,1120 190,1190 C220,1230 260,1260 280,1280 L0,1330 Z" fill="#6fb2ec" opacity=".55"/>
+<path d="M1024,1250 C980,1180 930,1170 890,1210 C860,1235 800,1270 760,1290 L1024,1330 Z" fill="#6fb2ec" opacity=".55"/>
+<path d="M-600,1500 L-600,1450 L0,1350 C200,1270 380,1255 512,1255 C650,1255 830,1275 1024,1350 L1624,1450 L1624,3000 L-600,3000 Z" fill="#b6dcfa"/>
+
+<!-- title -->
+<g stroke="#fde68a" stroke-width="16" stroke-linecap="round" class="rays">
+  <path d="M196,178 L228,194"/><path d="M188,230 L222,230"/><path d="M212,278 L238,258"/>
+  <path d="M828,178 L798,194"/><path d="M836,230 L802,232"/><path d="M812,278 L786,258"/>
+</g>
+<text x="512" y="244" text-anchor="middle" font-size="108" fill="#fff" stroke="#fff" stroke-width="3" stroke-linejoin="round" style="paint-order:stroke">Yes or No?</text>
+
+<!-- rays beside body -->
+<g stroke="#fde68a" stroke-width="22" stroke-linecap="round" class="rays">
+  <path d="M176,608 L226,642"/><path d="M146,718 L210,718"/><path d="M178,826 L224,796"/>
+  <path d="M848,608 L800,642"/><path d="M878,718 L816,718"/><path d="M846,826 L802,796"/>
+</g>
+
+<!-- body -->
+<ellipse cx="512" cy="1095" rx="250" ry="34" fill="#2f78c8" opacity=".35" filter="url(#blur)"/>
+<rect x="282" y="352" width="460" height="742" rx="230" fill="#d8b30a"/>
+<rect x="282" y="333" width="460" height="742" rx="230" fill="url(#yel)"/>
+<rect x="282" y="333" width="460" height="742" rx="230" fill="#fff" filter="url(#grain)" opacity=".5"/>
+<rect x="290" y="340" width="444" height="728" rx="222" fill="none" stroke="#fff" stroke-opacity=".3" stroke-width="6"/>
+
+<!-- YES -->
+<g id="yes" class="key" role="button" aria-label="Yes" tabindex="0">
+  <circle class="side" cx="510" cy="580" r="136" fill="#2a8434"/>
+  <g class="cap">
+    <circle cx="510" cy="558" r="140" fill="#2a8434"/>
+    <circle cx="510" cy="558" r="132" fill="url(#grn)"/>
+    <g transform="translate(508 548) scale(.95)">
+      <use href="#Y" stroke="#2f8f3a" transform="translate(-4,-4)"/>
+      <use href="#Y" stroke="#7fd687" transform="translate(4,4)"/>
+      <use href="#Y" stroke="#3ea349"/>
+    </g>
+  </g>
+</g>
+
+<!-- NO -->
+<g id="no" class="key" role="button" aria-label="No" tabindex="0">
+  <circle class="side" cx="510" cy="878" r="130" fill="#a31a14"/>
+  <g class="cap">
+    <circle cx="510" cy="858" r="134" fill="#a31a14"/>
+    <circle cx="510" cy="858" r="127" fill="url(#red)"/>
+    <g transform="translate(510 858)">
+      <use href="#N" stroke="#b51d17" transform="translate(-4,-4)"/>
+      <use href="#N" stroke="#f46a5e" transform="translate(4,4)"/>
+      <use href="#N" stroke="#d22a22"/>
+    </g>
+  </g>
+</g>
+
+<!-- pup (cropped from the Codex design) -->
+<image href="bluey.png" x="414" y="1138" width="196" height="196"/>
+<text x="512" y="1376" text-anchor="middle" font-size="46" fill="#2a3f86" font-weight="600">Press the button</text>
+<text x="512" y="1424" text-anchor="middle" font-size="46" fill="#2a3f86" font-weight="600">to choose</text>
+</svg>
+<script>
+(function(){
+  var SRC={yes:'yes.mp3',no:'no.mp3'};
+  // Make iOS play through the speaker even with the ring/silent switch on.
+  try{ if(navigator.audioSession) navigator.audioSession.type='playback'; }catch(e){}
+  var els={}, ctx, bufs={};
+  function getCtx(){ try{ ctx = ctx || new (window.AudioContext||window.webkitAudioContext)(); if(ctx.state==='suspended') ctx.resume(); }catch(e){} return ctx; }
+  function loadBuf(k){
+    try{
+      var u=SRC[k], p;
+      if(u.indexOf('data:')===0){
+        var bin=atob(u.split(',')[1]), ab=new ArrayBuffer(bin.length), v=new Uint8Array(ab);
+        for(var i=0;i<bin.length;i++) v[i]=bin.charCodeAt(i);
+        p=Promise.resolve(ab);
+      } else p=fetch(u).then(function(r){return r.arrayBuffer();});
+      p.then(function(ab){ var c=getCtx(); if(!c) return; var q=c.decodeAudioData(ab,function(b){bufs[k]=b;},function(){}); if(q&&q.catch) q.catch(function(){}); }).catch(function(){});
+    }catch(e){}
+  }
+  function boop(freqs){
+    try{
+      var c=getCtx(), t=c.currentTime;
+      freqs.forEach(function(f,i){
+        var o=c.createOscillator(), g=c.createGain();
+        o.type='square'; o.frequency.value=f;
+        g.gain.setValueAtTime(.0001,t+i*.09);
+        g.gain.exponentialRampToValueAtTime(.18,t+i*.09+.01);
+        g.gain.exponentialRampToValueAtTime(.0001,t+i*.09+.14);
+        o.connect(g).connect(c.destination); o.start(t+i*.09); o.stop(t+i*.09+.16);
+      });
+    }catch(e){}
+  }
+  function say(word){
+    try{ if(!('speechSynthesis' in window)) return; speechSynthesis.cancel();
+      var u=new SpeechSynthesisUtterance(word); u.rate=1.1; u.pitch=1.5; speechSynthesis.speak(u); }catch(e){}
+  }
+  function fallback(k,word,tones){
+    var c=getCtx();
+    if(c&&bufs[k]){ try{ var s=c.createBufferSource(); s.buffer=bufs[k]; s.connect(c.destination); s.start(0); return; }catch(e){} }
+    boop(tones); say(word);
+  }
+  function play(k,word,tones){
+    var pool=els[k];
+    try{
+      // Round-robin through a few copies so fast taps and two-finger presses overlap instead of cutting each other off.
+      var a=pool.list[pool.i]; pool.i=(pool.i+1)%pool.list.length;
+      try{ a.currentTime=0; }catch(e){}
+      var p=a.play();
+      if(p&&p.catch) p.catch(function(){ fallback(k,word,tones); });
+    }catch(e){ fallback(k,word,tones); }
+  }
+  function wire(id,k,word,tones,buzz){
+    var el=document.getElementById(id);
+    els[k]={i:0,list:[]}; for(var n=0;n<4;n++){ var a=new Audio(SRC[k]); a.preload='auto'; a.setAttribute('playsinline',''); a.load(); els[k].list.push(a); }
+    loadBuf(k);
+    function press(){
+      el.classList.add('down');
+      play(k,word,tones);
+      if(navigator.vibrate) navigator.vibrate(buzz);
+      el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
+    }
+    function up(){el.classList.remove('down');}
+    el.addEventListener('pointerdown',function(e){e.preventDefault();press();});
+    ['pointerup','pointerleave','pointercancel'].forEach(function(ev){el.addEventListener(ev,up);});
+    el.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); press(); setTimeout(up,120); }});
+  }
+  wire('yes','yes','Yes!',[523,784],20);
+  wire('no','no','No!',[330,220],[30,40,30]);
+  if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(function(){});
+})();
+</script>
+</body>
+</html>
