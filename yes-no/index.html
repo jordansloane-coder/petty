@@ -15,9 +15,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap">
 <style>
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;touch-action:manipulation}
-  html,body{margin:0;height:100%;overflow:hidden;overscroll-behavior:none;
-    background:linear-gradient(#6fb4ee,#8cc8f6 60%,#b9defa)}
-  body{display:flex;align-items:center;justify-content:center;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+  html{margin:0;background:#b9defa;overscroll-behavior:none}
+  body{margin:0;position:fixed;top:0;right:0;bottom:0;left:0;overflow:hidden;overscroll-behavior:none;
+    background:linear-gradient(#6fb4ee,#8cc8f6 60%,#b9defa);
+    display:flex;align-items:center;justify-content:center}
   svg{width:100%;height:100%;display:block;overflow:visible}
   text{font-family:"Fredoka","Baloo 2","Nunito","Arial Rounded MT Bold",ui-rounded,system-ui,sans-serif;font-weight:700}
   .key{cursor:pointer;outline:none}
@@ -108,6 +109,18 @@
 <image href="bluey.png" x="414" y="1138" width="196" height="196"/>
 <text x="512" y="1376" text-anchor="middle" font-size="46" fill="#2a3f86" font-weight="600">Press the button</text>
 <text x="512" y="1424" text-anchor="middle" font-size="46" fill="#2a3f86" font-weight="600">to choose</text>
+
+<!-- play the full song -->
+<g id="play" class="key" role="button" aria-label="Play Dance Mode song" tabindex="0" style="display:none">
+  <rect class="side" x="302" y="1468" width="420" height="92" rx="46" fill="#d8b30a"/>
+  <g class="cap">
+    <rect x="302" y="1456" width="420" height="92" rx="46" fill="url(#yel)"/>
+    <rect x="308" y="1462" width="408" height="80" rx="40" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="4"/>
+    <path id="playIcon" d="M372,1480 L372,1524 L410,1502 Z" fill="#2a3f86" stroke="#2a3f86" stroke-width="8" stroke-linejoin="round"/>
+    <g id="pauseIcon" style="display:none" fill="#2a3f86"><rect x="366" y="1480" width="12" height="44" rx="4"/><rect x="388" y="1480" width="12" height="44" rx="4"/></g>
+    <text id="playLabel" x="560" y="1516" text-anchor="middle" font-size="40" fill="#2a3f86">Dance Mode!</text>
+  </g>
+</g>
 </svg>
 <script>
 (function(){
@@ -174,6 +187,26 @@
     ['pointerup','pointerleave','pointercancel'].forEach(function(ev){el.addEventListener(ev,up);});
     el.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); press(); setTimeout(up,120); }});
   }
+  // Full song (optional): the button only shows if the audio file is there.
+  (function(){
+    var SONG={src:'dance-mode.mp3'};
+    var el=document.getElementById('play'), icon=document.getElementById('playIcon'), pic=document.getElementById('pauseIcon'), label=document.getElementById('playLabel');
+    var song=null;
+    function ui(on){ icon.style.display=on?'none':''; pic.style.display=on?'':'none'; label.textContent=on?'Pause':'Dance Mode!'; el.setAttribute('aria-label',on?'Pause song':'Play Dance Mode song'); }
+    function toggle(){
+      if(!song){ song=new Audio(SONG.src); song.preload='auto'; song.setAttribute('playsinline','');
+        song.addEventListener('ended',function(){ try{song.currentTime=0;}catch(e){} ui(false); });
+        song.addEventListener('pause',function(){ if(!song.ended) ui(false); });
+        song.addEventListener('play',function(){ ui(true); }); }
+      if(song.paused){ var p=song.play(); if(p&&p.catch) p.catch(function(){ ui(false); }); } else song.pause();
+    }
+    function show(){ el.style.display=''; }
+    el.addEventListener('pointerdown',function(e){ e.preventDefault(); el.classList.add('down'); toggle(); el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); });
+    ['pointerup','pointerleave','pointercancel'].forEach(function(ev){ el.addEventListener(ev,function(){ el.classList.remove('down'); }); });
+    el.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); } });
+    if(SONG.src.indexOf('data:')===0) show();
+    else if(window.fetch) fetch(SONG.src,{method:'HEAD'}).then(function(r){ if(r.ok) show(); }).catch(function(){});
+  })();
   wire('yes','yes','Yes!',[523,784],20);
   wire('no','no','No!',[330,220],[30,40,30]);
   if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(function(){});
